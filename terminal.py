@@ -62,7 +62,6 @@ class Shell:
             self.thread = threading.Thread(target=self.readloop)
             self.stop_event = threading.Event()
             self.thread.start()
-            logger.info("Started thread")
         except Exception as err:
             logger.error(err)
 
