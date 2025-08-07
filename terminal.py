@@ -8,17 +8,11 @@ def readuserinput(process):
     userinput = ""
     while userinput != "exit":
         userinput = input("% ")
-        try:
-            process.stdin.write(userinput)
-            process.stdin.write("\n")
-            process.stdin.flush()
-            time.sleep(0.1)
-        except Exception as err:
-            logger.error(err)
-    try:
-        process.terminate()
-    except Exception as err:
-        logger.error(err)
+        process.stdin.write(userinput)
+        process.stdin.write("\n")
+        process.stdin.flush()
+        time.sleep(0.1)
+    process.terminate()
     logger.info("Exiting the readuserinput thread...")
 
 def readprocessoutput(process):
