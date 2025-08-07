@@ -48,8 +48,7 @@ class GUI(tk.Tk):
         self.destroy()
 
 class Shell:
-    def __init__(self, gui, prefix="% "):
-        self.prefix = prefix
+    def __init__(self, gui):
         self.gui = gui
         try:
             self.process = subprocess.Popen(
@@ -66,9 +65,6 @@ class Shell:
             logger.info("Started thread")
         except Exception as err:
             logger.error(err)
-
-    def set_prefix(self, prefix):
-        self.prefix = prefix
 
     def readloop(self):
         logger.info("Starting readloop thread...")
