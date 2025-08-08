@@ -97,6 +97,10 @@ class Shell:
                 self.gui.append_prefix()
             elif "command not found" in stderr:
                 self.gui.append_prefix()
+            elif "No such file or directory" in stderr:
+                self.gui.append_prefix()
+            elif ">" in stderr:
+                self.gui.append_prefix()
         logger.info("Stopping readloop thread...")
 
     def write(self, userinput):
