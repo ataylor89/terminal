@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter.scrolledtext import ScrolledText
 import subprocess
 import threading
-import time
 import fcntl
 import os
 import logging
