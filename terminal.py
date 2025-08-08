@@ -42,12 +42,17 @@ class GUI(tk.Tk):
         userinput = self.text_area.get(f"{line}.2", f"{line}.end")
         if userinput == "exit":
             self.handle_close()
+        elif userinput == "clear":
+            self.clear_text()
         else:
             self.shell.write(userinput)
 
     def handle_close(self):
         self.shell.stop_event.set()
         self.destroy()
+
+    def clear_text(self):
+        self.text_area.delete("1.0", "end")
 
 class Shell:
     def __init__(self, gui):
