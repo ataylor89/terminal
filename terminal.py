@@ -40,8 +40,10 @@ class GUI(tk.Tk):
     def handle_enter(self, event):
         line = self.text_area.index('end-1c').split('.')[0]
         userinput = self.text_area.get(f"{line}.2", f"{line}.end")
-        logger.info("User input = %s" %userinput)
-        self.shell.write(userinput)
+        if userinput == "exit":
+            self.handle_close()
+        else:
+            self.shell.write(userinput)
 
     def handle_close(self):
         self.shell.stop_event.set()
@@ -58,6 +60,7 @@ class Shell:
                 stderr = subprocess.PIPE,
                 text=True)
             fcntl.fcntl(self.process.stdout.fileno(), fcntl.F_SETFL, os.O_NONBLOCK)
+            fcntl.fcntl(self.process.stderr.fileno(), fcntl.F_SETFL, os.O_NONBLOCK)
             logger.info("Started bash process")
             self.thread = threading.Thread(target=self.readloop)
             self.stop_event = threading.Event()
@@ -68,15 +71,24 @@ class Shell:
     def readloop(self):
         logger.info("Starting readloop thread...")
         while not self.stop_event.is_set():
-            buffer = ""
+            stdout = ""
+            stderr = ""
             done = False
             while not done:
                 try:
-                    buffer += self.process.stdout.read()
+                    stdout += self.process.stdout.read()
                 except:
                     done = True
-            if buffer:
-                self.gui.append(buffer)
+            done = False
+            while not done:
+                try:
+                    stderr += self.process.stderr.read()
+                except:
+                    done = True
+            if stdout:
+                self.gui.append(stdout)
+                self.gui.append_prefix()
+            elif "command not found" in stderr:
                 self.gui.append_prefix()
         logger.info("Stopping readloop thread...")
 
