@@ -20,7 +20,7 @@ class GUI(tk.Tk):
         self.prefix = "% "
         self.frame = tk.Frame(self)
         self.frame.pack(fill="both", expand=True)
-        self.text_area = ScrolledText(self.frame, wrap="word")
+        self.text_area = ScrolledText(self.frame, wrap="word", bg="blue", fg="white", font=("SF Mono Regular", 16))
         self.text_area.pack(fill="both", expand=True)
         self.text_area.bind("<Return>", self.handle_enter)
         self.append_prefix()
