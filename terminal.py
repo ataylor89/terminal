@@ -1,6 +1,3 @@
-# Please note, this is still a work in progress
-# It's not done... there is still a lot of work to do
-
 import tkinter as tk
 from tkinter.scrolledtext import ScrolledText
 import subprocess
