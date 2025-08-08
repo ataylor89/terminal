@@ -17,8 +17,8 @@ class GUI(tk.Tk):
         self.text_area.pack(fill="both", expand=True)
         self.text_area.bind("<Return>", self.handle_enter)
         self.text_area.bind("<BackSpace>", self.handle_delete)
-        self.append_prefix()
         self.protocol("WM_DELETE_WINDOW", self.handle_close)
+        self.append_prefix()
 
     def set_shell(self, shell):
         self.shell = shell
