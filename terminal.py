@@ -69,7 +69,7 @@ class Shell:
             logger.error(err)
 
     def readloop(self):
-        logger.info("Starting readloop...")
+        logger.info("Starting readloop thread...")
         while not self.stop_event.is_set():
             stdout = ""
             stderr = ""
@@ -90,7 +90,7 @@ class Shell:
                 self.gui.append_prefix()
             elif "command not found" in stderr:
                 self.gui.append_prefix()
-        logger.info("Stopping readloop...")
+        logger.info("Stopping readloop thread...")
 
     def write(self, userinput):
         self.process.stdin.write(userinput)
