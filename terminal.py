@@ -4,9 +4,6 @@ import subprocess
 import threading
 import fcntl
 import os
-import logging
-
-logger = logging.getLogger(__name__)
 
 class GUI(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -72,15 +69,13 @@ class Shell:
                 text=True)
             fcntl.fcntl(self.process.stdout.fileno(), fcntl.F_SETFL, os.O_NONBLOCK)
             fcntl.fcntl(self.process.stderr.fileno(), fcntl.F_SETFL, os.O_NONBLOCK)
-            logger.info("Started bash process")
             self.thread = threading.Thread(target=self.readloop)
             self.stop_event = threading.Event()
             self.thread.start()
         except Exception as err:
-            logger.error(err)
+            print(err)
 
     def readloop(self):
-        logger.info("Starting readloop thread...")
         while not self.stop_event.is_set():
             stdout = ""
             stderr = ""
@@ -105,7 +100,6 @@ class Shell:
                 self.gui.append_prefix()
             elif ">" in stderr:
                 self.gui.append_prefix()
-        logger.info("Stopping readloop thread...")
 
     def write(self, userinput):
         self.process.stdin.write(userinput)
@@ -113,12 +107,6 @@ class Shell:
         self.process.stdin.flush()
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        filename="terminal.log",
-        level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S")
-    logger.info("Starting up...")
     gui = GUI()
     shell = Shell(gui)
     gui.set_shell(shell)
