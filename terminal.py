@@ -76,6 +76,7 @@ class Shell:
             print(err)
 
     def readloop(self):
+        key_phrases = ["command not found", "No such file", ">", "rm"]
         while not self.stop_event.is_set():
             stdout = ""
             stderr = ""
@@ -94,11 +95,7 @@ class Shell:
             if stdout:
                 self.gui.append(stdout)
                 self.gui.append_prefix()
-            elif "command not found" in stderr:
-                self.gui.append_prefix()
-            elif "No such file or directory" in stderr:
-                self.gui.append_prefix()
-            elif ">" in stderr:
+            elif any(phrase in stderr for phrase in key_phrases):
                 self.gui.append_prefix()
 
     def write(self, userinput):
