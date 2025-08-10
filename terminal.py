@@ -46,9 +46,13 @@ class GUI(tk.Tk):
             self.append(datetime.now().astimezone().strftime("\nIt is %-I:%M %p on %A, %B %d, %Y\n"))
             self.append_prefix()
             return "break"
-        elif userinput in ["vi", "vim", "wordprocessor", "wp"]:
+        elif userinput.startswith(("vi", "vim", "wp", "wordprocessor")):
             if os.path.exists(self.paths["wordprocessor"]):
-                subprocess.Popen(["java", "-jar", self.paths["wordprocessor"]])
+                tokens = userinput.split(" ")
+                if len(tokens) == 2:
+                    subprocess.Popen(["java", "-jar", self.paths["wordprocessor"], tokens[1]])
+                else:
+                    subprocess.Popen(["java", "-jar", self.paths["wordprocessor"]])
                 self.append("\n")
                 self.append_prefix()
                 return "break"
