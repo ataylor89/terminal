@@ -109,6 +109,8 @@ class Shell:
                     done = True
             if stdout:
                 self.gui.append(stdout)
+                if "cat" in stderr:
+                    self.gui.append("\n")
                 self.gui.append_prefix()
             elif any(phrase in stderr for phrase in key_phrases):
                 self.gui.append_prefix()
