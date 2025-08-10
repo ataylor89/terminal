@@ -12,6 +12,8 @@ class GUI(tk.Tk):
         self.title("Terminal")
         self.geometry("900x600")
         self.prefix = "% "
+        self.home = os.path.expanduser("~")
+        self.paths = {"wordprocessor": self.home + "/Github/WordProcessor/target/WordProcessor.jar"}
         self.frame = tk.Frame(self)
         self.frame.pack(fill="both", expand=True)
         self.text_area = ScrolledText(self.frame, wrap="word", bg="blue", fg="white", font=("SF Mono Regular", 16))
@@ -44,6 +46,12 @@ class GUI(tk.Tk):
             self.append(datetime.now().astimezone().strftime("\nIt is %-I:%M %p on %A, %B %d, %Y\n"))
             self.append_prefix()
             return "break"
+        elif userinput in ["vi", "vim", "wordprocessor", "wp"]:
+            if os.path.exists(self.paths["wordprocessor"]):
+                subprocess.Popen(["java", "-jar", self.paths["wordprocessor"]])
+                self.append("\n")
+                self.append_prefix()
+                return "break"
         else:
             self.shell.write(userinput)
 
