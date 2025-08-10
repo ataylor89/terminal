@@ -4,6 +4,7 @@ import subprocess
 import threading
 import fcntl
 import os
+from datetime import datetime
 
 class GUI(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -38,6 +39,10 @@ class GUI(tk.Tk):
             self.handle_close()
         elif userinput == "clear":
             self.clear_text()
+            return "break"
+        elif userinput == "time":
+            self.append(datetime.now().astimezone().strftime("\nIt is %-I:%M %p on %A, %B %d, %Y\n"))
+            self.append_prefix()
             return "break"
         else:
             self.shell.write(userinput)
