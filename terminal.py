@@ -40,8 +40,12 @@ class GUI(tk.Tk):
         elif userinput == "clear":
             self.clear_text()
             return "break"
+        elif userinput == "date":
+            self.append(datetime.now().strftime("\n%A, %B %d, %Y\n"))
+            self.append_prefix()
+            return "break"
         elif userinput == "time":
-            self.append(datetime.now().astimezone().strftime("\nIt is %-I:%M %p on %A, %B %d, %Y\n"))
+            self.append(datetime.now().strftime("\n%-I:%M %p\n"))
             self.append_prefix()
             return "break"
         elif userinput.startswith(("vi", "vim", "wp", "wordprocessor")):
