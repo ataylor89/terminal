@@ -48,7 +48,7 @@ class GUI(tk.Tk):
             self.append(datetime.now().strftime("\n%-I:%M %p\n"))
             self.append_prefix()
             return "break"
-        elif userinput.startswith(("vi", "vim", "wp", "wordprocessor")):
+        elif userinput in ("vi", "vim") or userinput.startswith(("vi ", "vim ")):
             if os.path.exists(self.settings.wp_path):
                 tokens = userinput.split(" ")
                 if len(tokens) == 2:
