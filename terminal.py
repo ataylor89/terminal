@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter.scrolledtext import ScrolledText
 import subprocess
-import threading
+import time
 import fcntl
 import os
 from datetime import datetime
@@ -60,6 +60,12 @@ class GUI(tk.Tk):
                 return "break"
         else:
             self.shell.write(userinput)
+            self.append("\n")
+            time.sleep(0.1)
+            stdout = self.shell.readall()
+            self.append(stdout)
+            self.append_prefix()
+            return "break"
 
     def handle_delete(self, event):
         index = self.text_area.index(tk.INSERT)
@@ -69,7 +75,6 @@ class GUI(tk.Tk):
             return "break"
 
     def handle_close(self):
-        self.shell.stop_event.set()
         self.destroy()
 
     def clear_text(self):
@@ -88,36 +93,25 @@ class Shell:
                 text=True)
             fcntl.fcntl(self.process.stdout.fileno(), fcntl.F_SETFL, os.O_NONBLOCK)
             fcntl.fcntl(self.process.stderr.fileno(), fcntl.F_SETFL, os.O_NONBLOCK)
-            self.thread = threading.Thread(target=self.readloop)
-            self.stop_event = threading.Event()
-            self.thread.start()
         except Exception as err:
             print(err)
 
-    def readloop(self):
-        key_phrases = ["command not found", "No such file", ">", "rm"]
-        while not self.stop_event.is_set():
-            stdout = ""
-            stderr = ""
-            done = False
-            while not done:
-                try:
-                    stdout += self.process.stdout.read()
-                except:
-                    done = True
-            done = False
-            while not done:
-                try:
-                    stderr += self.process.stderr.read()
-                except:
-                    done = True
-            if stdout:
-                self.gui.append(stdout)
-                if "cat" in stderr:
-                    self.gui.append("\n")
-                self.gui.append_prefix()
-            elif any(phrase in stderr for phrase in key_phrases):
-                self.gui.append_prefix()
+    def readall(self):
+        stdout = ""
+        stderr = ""
+        done = False
+        while not done:
+            try:
+                stdout += self.process.stdout.read()
+            except:
+                done = True
+        done = False
+        while not done:
+            try:
+                stderr += self.process.stderr.read()
+            except:
+                done = True
+        return stdout
 
     def write(self, userinput):
         self.process.stdin.write(userinput)
