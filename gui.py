@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter.scrolledtext import ScrolledText
 import time
 from datetime import datetime
+import os
 
 class GUI(tk.Tk):
     def __init__(self, settings):
