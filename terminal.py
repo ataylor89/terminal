@@ -7,16 +7,14 @@ import os
 from datetime import datetime
 
 class GUI(tk.Tk):
-    def __init__(self, *args, **kwargs):
-        tk.Tk.__init__(self, *args, **kwargs)
+    def __init__(self, settings):
+        self.settings = settings
+        tk.Tk.__init__(self)
         self.title("Terminal")
-        self.geometry("900x600")
-        self.prefix = "% "
-        self.home = os.path.expanduser("~")
-        self.paths = {"wordprocessor": self.home + "/Github/WordProcessor/target/WordProcessor.jar"}
+        self.geometry(settings.geometry)
         self.frame = tk.Frame(self)
         self.frame.pack(fill="both", expand=True)
-        self.text_area = ScrolledText(self.frame, wrap="word", bg="blue", fg="white", font=("SF Mono Regular", 16))
+        self.text_area = ScrolledText(self.frame, wrap="word", bg=settings.bg, fg=settings.fg, font=settings.font)
         self.text_area.pack(fill="both", expand=True)
         self.text_area.bind("<Return>", self.handle_enter)
         self.text_area.bind("<BackSpace>", self.handle_delete)
@@ -31,7 +29,7 @@ class GUI(tk.Tk):
         self.text_area.see(tk.END)
 
     def append_prefix(self):
-        self.text_area.insert(tk.END, self.prefix)
+        self.text_area.insert(tk.END, self.settings.prefix)
         self.text_area.see(tk.END)
 
     def handle_enter(self, event):
@@ -47,12 +45,12 @@ class GUI(tk.Tk):
             self.append_prefix()
             return "break"
         elif userinput.startswith(("vi", "vim", "wp", "wordprocessor")):
-            if os.path.exists(self.paths["wordprocessor"]):
+            if os.path.exists(self.settings.wp_path):
                 tokens = userinput.split(" ")
                 if len(tokens) == 2:
-                    subprocess.Popen(["java", "-jar", self.paths["wordprocessor"], tokens[1]])
+                    subprocess.Popen(["java", "-jar", self.settings.wp_path, tokens[1]])
                 else:
-                    subprocess.Popen(["java", "-jar", self.paths["wordprocessor"]])
+                    subprocess.Popen(["java", "-jar", self.settings.wp_path])
                 self.append("\n")
                 self.append_prefix()
                 return "break"
@@ -120,8 +118,18 @@ class Shell:
         self.process.stdin.write("\n")
         self.process.stdin.flush()
 
+class Settings:
+    def __init__(self):
+        self.geometry = "900x600"
+        self.bg = "blue"
+        self.fg = "white"
+        self.font = ("SF Mono Regular", 16)
+        self.prefix = "% "
+        self.homedir = os.path.expanduser("~")
+        self.wp_path = self.homedir + "/Github/WordProcessor/target/WordProcessor.jar"
+
 if __name__ == "__main__":
-    gui = GUI()
+    gui = GUI(Settings())
     shell = Shell(gui)
     gui.set_shell(shell)
     gui.mainloop()
