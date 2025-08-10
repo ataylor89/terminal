@@ -1,5 +1,5 @@
 # The contents of this file are saved in ~/.bashrc
-# The bash process runs the commands in ~/.bashrc every time a non-login shell is started\
+# The bash process runs the commands in ~/.bashrc every time a non-login shell is started
 # The command "python terminal.py" starts a bash process, which in turn runs the commands in ~/.bashrc
 # So... if you want to set up aliases that work in Terminal (terminal.py), you can configure them in the ~/.bashrc configuration file
 # The ~ symbol stands for your user directory, which is equivalent to $HOME in bash and zsh
