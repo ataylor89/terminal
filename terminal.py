@@ -82,8 +82,7 @@ class GUI(tk.Tk):
         self.append_prefix()
 
 class Shell:
-    def __init__(self, gui):
-        self.gui = gui
+    def __init__(self):
         try:
             self.process = subprocess.Popen(
                 ["/bin/bash", "-i"],
@@ -130,6 +129,5 @@ class Settings:
 
 if __name__ == "__main__":
     gui = GUI(Settings())
-    shell = Shell(gui)
-    gui.set_shell(shell)
+    gui.set_shell(Shell())
     gui.mainloop()
