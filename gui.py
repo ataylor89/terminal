@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter.scrolledtext import ScrolledText
-import time
 from datetime import datetime
+import time
+import subprocess
 import os
 
 class GUI(tk.Tk):
