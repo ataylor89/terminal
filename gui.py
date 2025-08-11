@@ -57,6 +57,10 @@ class GUI(tk.Tk):
                 self.append("\n")
                 self.append_prefix()
                 return "break"
+            else:
+                self.append("\nThe WordProcessor application is not installed.\n")
+                self.append_prefix()
+                return "break"
         else:
             self.shell.write(userinput)
             self.append("\n")
