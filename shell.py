@@ -22,9 +22,9 @@ class Shell:
             if os.path.exists(self.settings.wp_path):
                 tokens = cmd.split(" ")
                 if len(tokens) == 2:
-                    subprocess.run(["java", "-jar", self.settings.wp_path, tokens[1]])
+                    subprocess.Popen(["java", "-jar", self.settings.wp_path, tokens[1]])
                 else:
-                    subprocess.run(["java", "-jar", self.settings.wp_path])
+                    subprocess.Popen(["java", "-jar", self.settings.wp_path])
                 self.gui.append("\n")
                 self.gui.append_prefix()
             else:
