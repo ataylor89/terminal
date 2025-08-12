@@ -12,7 +12,7 @@ class GUI(tk.Tk):
         self.text_area = ScrolledText(self.frame, wrap="word", bg=settings.bg, fg=settings.fg, font=settings.font)
         self.text_area.pack(fill="both", expand=True)
         self.text_area.bind("<Return>", self.handle_return)
-        self.text_area.bind("<BackSpace>", self.handle_backspace)
+        self.text_area.bind("<BackSpace>", self.handle_delete)
         self.protocol("WM_DELETE_WINDOW", self.destroy)
         self.append_prefix()
 
@@ -37,7 +37,7 @@ class GUI(tk.Tk):
         self.shell.exec(userinput)
         return "break"
 
-    def handle_backspace(self, event):
+    def handle_delete(self, event):
         index = self.text_area.index(tk.INSERT)
         line, pos = index.split(".")
         pos = int(pos)
