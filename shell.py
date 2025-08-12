@@ -18,7 +18,7 @@ class Shell:
         elif cmd == "time":
             self.gui.append(datetime.now().strftime("\n%-I:%M %p\n"))
             self.gui.append_prefix()
-        elif cmd in ("vi", "vim") or cmd.startswith(("vi ", "vim ")):
+        elif cmd in ("vi", "vim", "wp", "wordprocessor") or cmd.startswith(("vi ", "vim ", "wp ", "wordprocessor ")):
             if os.path.exists(self.settings.wp_path):
                 tokens = cmd.split(" ")
                 if len(tokens) == 2:
