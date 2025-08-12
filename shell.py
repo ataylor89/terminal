@@ -1,39 +1,41 @@
 import subprocess
-import fcntl
 import os
+from datetime import datetime
 
 class Shell:
-    def __init__(self):
-        try:
-            self.process = subprocess.Popen(
-                ["/bin/bash", "-i"],
-                stdin = subprocess.PIPE,
-                stdout = subprocess.PIPE,
-                stderr = subprocess.PIPE,
-                text=True)
-            fcntl.fcntl(self.process.stdout.fileno(), fcntl.F_SETFL, os.O_NONBLOCK)
-            fcntl.fcntl(self.process.stderr.fileno(), fcntl.F_SETFL, os.O_NONBLOCK)
-        except Exception as err:
-            print(err)
+    def __init__(self, settings, gui):
+        self.settings = settings
+        self.gui = gui
 
-    def readall(self):
-        stdout = ""
-        stderr = ""
-        done = False
-        while not done:
+    def exec(self, cmd):
+        if cmd == "exit":
+            self.gui.destroy()
+        elif cmd == "clear":
+            self.gui.clear_text()
+        elif cmd == "date":
+            self.gui.append(datetime.now().strftime("\n%A, %B %d, %Y\n"))
+            self.gui.append_prefix()
+        elif cmd == "time":
+            self.gui.append(datetime.now().strftime("\n%-I:%M %p\n"))
+            self.gui.append_prefix()
+        elif cmd in ("vi", "vim") or cmd.startswith(("vi ", "vim ")):
+            if os.path.exists(self.settings.wp_path):
+                tokens = cmd.split(" ")
+                if len(tokens) == 2:
+                    subprocess.run(["java", "-jar", self.settings.wp_path, tokens[1]])
+                else:
+                    subprocess.run(["java", "-jar", self.settings.wp_path])
+                self.gui.append("\n")
+                self.gui.append_prefix()
+            else:
+                self.gui.append("\nThe WordProcessor application is not installed.\n")
+                self.gui.append_prefix()
+        else:
             try:
-                stdout += self.process.stdout.read()
-            except:
-                done = True
-        done = False
-        while not done:
-            try:
-                stderr += self.process.stderr.read()
-            except:
-                done = True
-        return stdout
-
-    def write(self, userinput):
-        self.process.stdin.write(userinput)
-        self.process.stdin.write("\n")
-        self.process.stdin.flush()
+                result = subprocess.run(cmd.split(" "), capture_output=True, text=True, check=True)
+                self.gui.append("\n" + result.stdout)
+                self.gui.append_prefix()
+            except Exception as err:
+                print(err)
+                self.gui.append("\n")
+                self.gui.append_prefix()
