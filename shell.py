@@ -30,6 +30,14 @@ class Shell:
             else:
                 self.gui.append("\nThe WordProcessor application is not installed.\n")
                 self.gui.append_prefix()
+        elif cmd == "paint":
+            if os.path.exists(self.settings.paint_path):
+                subprocess.Popen(["java", "-jar", self.settings.paint_path])
+                self.gui.append("\n")
+                self.gui.append_prefix()
+            else:
+                self.gui.append("\nThe Paint application is not installed.\n")
+                self.gui.append_prefix()
         else:
             try:
                 result = subprocess.run(cmd.split(" "), capture_output=True, text=True, check=True)
