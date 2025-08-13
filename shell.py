@@ -1,3 +1,4 @@
+import util
 import subprocess
 from datetime import datetime
 
@@ -32,9 +33,22 @@ class Shell:
         elif cmd == "time":
             self.gui.append(datetime.now().strftime("\n%-I:%M %p\n"))
             self.gui.append_prefix()
+        elif util.search(cmd, "|"):
+            cmds = util.split(cmd, delimiter="|")
+            results = []
+            for i in range(0, len(cmds)):
+                args = util.split(cmds[i], strip_quotes=True)
+                if i == 0:
+                    results.append(subprocess.run(args, capture_output=True, text=True))
+                else:
+                    results.append(subprocess.run(args, input=results[i-1].stdout, capture_output=True, text=True))
+                    if i == len(cmds)-1:
+                        self.gui.append("\n" + results[i].stdout)
+                        self.gui.append_prefix()
         else:
             try:
-                result = subprocess.run(cmd.split(" "), capture_output=True, text=True, check=True)
+                args = util.split(cmd, strip_quotes=True)
+                result = subprocess.run(args, capture_output=True, text=True, check=True)
                 self.gui.append("\n" + result.stdout)
                 self.gui.append_prefix()
             except Exception as err:
