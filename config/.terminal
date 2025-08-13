@@ -7,6 +7,7 @@ export fontsize=16
 export prefix="% "
 
 # Aliases
+alias python="/usr/bin/python3"
 alias vi="java -jar $home/Github/WordProcessor/target/WordProcessor.jar"
 alias vim="java -jar $home/Github/WordProcessor/target/WordProcessor.jar"
 alias wp="java -jar $home/Github/WordProcessor/target/WordProcessor.jar"
