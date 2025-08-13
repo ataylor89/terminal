@@ -4,7 +4,7 @@ def parse_config(filename):
     with open(filename, "r") as file:
         for line in file:
             line = line.strip()
-            tokens = line.split(" ")
+            tokens = line.split(" ", 1)
             if tokens[0] == "export":
                 name, value = tokens[1].split("=")
                 variables["$" + name] = clean(value)

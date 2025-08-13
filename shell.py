@@ -20,7 +20,19 @@ class Shell:
             self.config = {}
         self.config["variables"]["$HOME"] = os.path.expanduser("~")
 
+    def preprocess(self, cmd):
+        tokens = cmd.strip().split(" ")
+        if tokens[0] in self.config["aliases"]:
+            name = tokens[0]
+            value = self.config["aliases"][name]
+            cmd = cmd.replace(name, value, 1)
+        for name, value in self.config["variables"].items():
+            if name in cmd:
+                cmd = cmd.replace(name, value)
+        return cmd
+
     def exec(self, cmd):
+        cmd = self.preprocess(cmd)
         if cmd == "exit":
             self.gui.destroy()
         elif cmd == "clear":
@@ -31,26 +43,6 @@ class Shell:
         elif cmd == "time":
             self.gui.append(datetime.now().strftime("\n%-I:%M %p\n"))
             self.gui.append_prefix()
-        elif cmd in ("vi", "vim", "wp", "wordprocessor") or cmd.startswith(("vi ", "vim ", "wp ", "wordprocessor ")):
-            if os.path.exists(self.settings.wp_path):
-                tokens = cmd.split(" ")
-                if len(tokens) == 2:
-                    subprocess.Popen(["java", "-jar", self.settings.wp_path, tokens[1]])
-                else:
-                    subprocess.Popen(["java", "-jar", self.settings.wp_path])
-                self.gui.append("\n")
-                self.gui.append_prefix()
-            else:
-                self.gui.append("\nThe WordProcessor application is not installed.\n")
-                self.gui.append_prefix()
-        elif cmd == "paint":
-            if os.path.exists(self.settings.paint_path):
-                subprocess.Popen(["java", "-jar", self.settings.paint_path])
-                self.gui.append("\n")
-                self.gui.append_prefix()
-            else:
-                self.gui.append("\nThe Paint application is not installed.\n")
-                self.gui.append_prefix()
         else:
             try:
                 result = subprocess.run(cmd.split(" "), capture_output=True, text=True, check=True)
