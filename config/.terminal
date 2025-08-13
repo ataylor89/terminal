@@ -1,5 +1,5 @@
 # Variables
-export geometry="900x600"
+export geometry="1200x800"
 export bg="blue"
 export fg="white"
 export font="SF Mono Regular"
