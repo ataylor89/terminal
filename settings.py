@@ -1,5 +1,3 @@
-import os
-
 class Settings:
     def __init__(self):
         self.geometry = "900x600"
@@ -7,4 +5,3 @@ class Settings:
         self.fg = "white"
         self.font = ("SF Mono Regular", 16)
         self.prefix = "% "
-        self.homedir = os.path.expanduser("~")
