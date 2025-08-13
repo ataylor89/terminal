@@ -17,6 +17,7 @@ class GUI(tk.Tk):
             fg=vars["fg"],
             font=(vars["font"], vars["fontsize"]))
         self.text_area.pack(fill="both", expand=True)
+        self.text_area.bind("<Key>", self.handle_key_press)
         self.text_area.bind("<Return>", self.handle_return)
         self.text_area.bind("<BackSpace>", self.handle_delete)
         self.protocol("WM_DELETE_WINDOW", self.destroy)
@@ -37,6 +38,12 @@ class GUI(tk.Tk):
         self.text_area.delete("1.0", tk.END)
         self.append_prefix()
 
+    def handle_key_press(self, event):
+        index = self.text_area.index(tk.INSERT)
+        line, pos = index.split(".")
+        if int(line) < self.line_count():
+            return "break"
+
     def handle_return(self, event):
         line = self.text_area.index('end-1c').split('.')[0]
         userinput = self.text_area.get(f"{line}.2", f"{line}.end")
@@ -46,6 +53,10 @@ class GUI(tk.Tk):
     def handle_delete(self, event):
         index = self.text_area.index(tk.INSERT)
         line, pos = index.split(".")
-        pos = int(pos)
-        if pos <= 2:
+        if int(pos) <= 2 or int(line) < self.line_count():
             return "break"
+
+    def line_count(self):
+        index = self.text_area.index(tk.END)
+        numlines = int(index.split(".")[0]) - 1
+        return numlines
