@@ -1,8 +1,17 @@
-alias vi="java -jar $HOME/Github/WordProcessor/target/WordProcessor.jar"
-alias vim="java -jar $HOME/Github/WordProcessor/target/WordProcessor.jar"
-alias wp="java -jar $HOME/Github/WordProcessor/target/WordProcessor.jar"
-alias wordprocessor="java -jar $HOME/Github/WordProcessor/target/WordProcessor.jar"
-alias paint="java -jar $HOME/Github/Paint/target/Paint.jar"
-alias sigcont="$HOME/Github/signal/arm/sigcont"
-alias sigstop="$HOME/Github/signal/arm/sigstop"
-alias sigterm="$HOME/Github/signal/arm/sigterm"
+# Variables
+export geometry="900x600"
+export bg="blue"
+export fg="white"
+export font="SF Mono Regular"
+export fontsize=16
+export prefix="% "
+
+# Aliases
+alias vi="java -jar $home/Github/WordProcessor/target/WordProcessor.jar"
+alias vim="java -jar $home/Github/WordProcessor/target/WordProcessor.jar"
+alias wp="java -jar $home/Github/WordProcessor/target/WordProcessor.jar"
+alias wordprocessor="java -jar $home/Github/WordProcessor/target/WordProcessor.jar"
+alias paint="java -jar $home/Github/Paint/target/Paint.jar"
+alias sigcont="$home/Github/signal/arm/sigcont"
+alias sigstop="$home/Github/signal/arm/sigstop"
+alias sigterm="$home/Github/signal/arm/sigterm"

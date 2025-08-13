@@ -1,25 +1,12 @@
-import parser
 import subprocess
-import os
 from datetime import datetime
 
 class Shell:
-    def __init__(self, settings):
-        self.settings = settings
-        self.homedir = os.path.expanduser("~")
-        self.load_config()
+    def __init__(self, config):
+        self.config = config
 
     def set_gui(self, gui):
         self.gui = gui
-
-    def load_config(self):
-        if os.path.exists(self.homedir + "/.terminal"):
-            self.config = parser.parse_config(self.homedir + "/.terminal")
-        elif os.path.exists("config/.terminal"):
-            self.config = parser.parse_config("config/.terminal")
-        else:
-            self.config = {}
-        self.config["variables"]["$HOME"] = self.homedir
 
     def preprocess(self, cmd):
         tokens = cmd.strip().split(" ")
@@ -28,6 +15,7 @@ class Shell:
             value = self.config["aliases"][name]
             cmd = cmd.replace(name, value, 1)
         for name, value in self.config["variables"].items():
+            name = "$" + name
             if name in cmd:
                 cmd = cmd.replace(name, value)
         return cmd

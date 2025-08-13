@@ -1,11 +1,11 @@
 import gui
 import shell
-import settings
+import parser
 
 def main():
-    sets = settings.Settings()
-    sh = shell.Shell(sets)
-    Gui = gui.GUI(sets)
+    config = parser.parse_config()
+    sh = shell.Shell(config)
+    Gui = gui.GUI(config)
     sh.set_gui(Gui)
     Gui.set_shell(sh)
     Gui.mainloop()

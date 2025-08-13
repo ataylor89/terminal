@@ -2,14 +2,20 @@ import tkinter as tk
 from tkinter.scrolledtext import ScrolledText
 
 class GUI(tk.Tk):
-    def __init__(self, settings):
-        self.settings = settings
+    def __init__(self, config):
+        self.config = config
+        vars = config["variables"]
+        self.prefix = vars["prefix"]
         tk.Tk.__init__(self)
         self.title("Terminal")
-        self.geometry(settings.geometry)
+        self.geometry(vars["geometry"])
         self.frame = tk.Frame(self)
         self.frame.pack(fill="both", expand=True)
-        self.text_area = ScrolledText(self.frame, wrap="word", bg=settings.bg, fg=settings.fg, font=settings.font)
+        self.text_area = ScrolledText(self.frame, 
+            wrap="word", 
+            bg=vars["bg"],
+            fg=vars["fg"],
+            font=(vars["font"], vars["fontsize"]))
         self.text_area.pack(fill="both", expand=True)
         self.text_area.bind("<Return>", self.handle_return)
         self.text_area.bind("<BackSpace>", self.handle_delete)
@@ -24,7 +30,7 @@ class GUI(tk.Tk):
         self.text_area.see(tk.END)
 
     def append_prefix(self):
-        self.text_area.insert(tk.END, self.settings.prefix)
+        self.text_area.insert(tk.END, self.prefix)
         self.text_area.see(tk.END)
 
     def clear_text(self):
