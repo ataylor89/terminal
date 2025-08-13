@@ -1,4 +1,3 @@
-export HOME="/Users/username"
 alias sigcont="$HOME/Github/signal/arm/sigcont"
 alias sigstop="$HOME/Github/signal/arm/sigstop"
 alias sigterm="$HOME/Github/signal/arm/sigterm"

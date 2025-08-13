@@ -3,11 +3,12 @@ import shell
 import settings
 
 def main():
-    config = settings.Settings()
-    app = gui.GUI(config)
-    sh = shell.Shell(config, app)
-    app.set_shell(sh)
-    app.mainloop()
+    sets = settings.Settings()
+    sh = shell.Shell(sets)
+    Gui = gui.GUI(sets)
+    sh.set_gui(Gui)
+    Gui.set_shell(sh)
+    Gui.mainloop()
 
 if __name__ == "__main__":
     main()
