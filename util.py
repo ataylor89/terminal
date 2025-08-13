@@ -1,9 +1,6 @@
-import shlex
+import re
 
-def split(text, delimiter=None, quotes="'\""):
-    lexer = shlex.shlex(text, posix=True)
-    lexer.whitespace_split = True
-    if delimiter:
-        lexer.whitespace = delimiter
-    lexer.quotes = quotes
-    return [item.strip() for item in list(lexer)]
+def split(text, delimiter=" "):
+    pattern = r'{0}(?=(?:[^"\']*["\'][^"\']*["\'])*[^"\']*$)'.format(re.escape(delimiter))
+    return [token.strip() for token in re.split(pattern, text)]
+
