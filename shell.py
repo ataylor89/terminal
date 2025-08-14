@@ -61,7 +61,8 @@ class Shell:
                             file.write(results[i])
                     if i == len(pipes)-1:
                         if pipe["mode"] == "stdout":
-                            self.gui.append("\n" + results[i])
+                            self.gui.flush(prefix=False)
+                            self.gui.append(results[i])
             elif commandname == "exit":
                 self.gui.destroy()
             elif commandname == "clear":
@@ -74,7 +75,8 @@ class Shell:
                     with open(filename, mode) as file:
                         file.write(output)
                 else:
-                    self.gui.append("\n" + output)
+                    self.gui.flush(prefix=False)
+                    self.gui.append(output)
             elif commandname == "time":
                 output = datetime.now().strftime("%-I:%M %p")
                 if statement["mode"] in ("write", "append"):
@@ -83,7 +85,8 @@ class Shell:
                     with open(filename, mode) as file:
                         file.write(output)
                 else:
-                    self.gui.append("\n" + output)
+                    self.gui.flush(prefix=False)
+                    self.gui.append(output)
             else:
                 args = util.split(command, strip_quotes=True)
                 result = subprocess.run(args, capture_output=True, text=True, check=True)
@@ -93,8 +96,9 @@ class Shell:
                     with open(filename, mode) as file:
                         file.write(result.stdout)
                 else:
-                    self.gui.append("\n" + result.stdout)
-        self.gui.flush()
+                    self.gui.flush(prefix=False)
+                    self.gui.append(result.stdout)
+        self.gui.flush(prefix=True)
 
     def compile(self, code):
         statements = []

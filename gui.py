@@ -60,14 +60,16 @@ class GUI(tk.Tk):
         numlines = int(index.split(".")[0]) - 1
         return numlines
 
-    def flush(self):
+    def flush(self, prefix=True):
         index = self.text_area.index(tk.INSERT)
         line, pos = index.split(".")
         code = self.text_area.get(f"{line}.0", f"{line}.end").strip()
         if not code:
-            self.append_prefix()
+            if prefix:
+                self.append_prefix()
         elif code == self.prefix:
             return
         else:
             self.append("\n")
-            self.append_prefix()
+            if prefix:
+                self.append_prefix()
