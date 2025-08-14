@@ -46,8 +46,8 @@ class GUI(tk.Tk):
 
     def handle_return(self, event):
         line = self.text_area.index('end-1c').split('.')[0]
-        userinput = self.text_area.get(f"{line}.2", f"{line}.end")
-        self.shell.exec(userinput)
+        code = self.text_area.get(f"{line}.2", f"{line}.end")
+        self.shell.run(code)
         return "break"
 
     def handle_delete(self, event):
