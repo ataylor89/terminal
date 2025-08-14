@@ -62,10 +62,6 @@ class Shell:
                     if i == len(pipes)-1:
                         if pipe["mode"] == "stdout":
                             self.gui.append("\n" + results[i])
-                            self.gui.append_prefix()
-                        else:
-                            self.gui.append("\n")
-                            self.gui.append_prefix()
             elif commandname == "exit":
                 self.gui.destroy()
             elif commandname == "clear":
@@ -77,11 +73,8 @@ class Shell:
                     filename = statement["output_file"]
                     with open(filename, mode) as file:
                         file.write(output)
-                    self.gui.append("\n")
-                    self.gui.append_prefix()
                 else:
-                    self.gui.append("\n" + output + "\n")
-                    self.gui.append_prefix()
+                    self.gui.append("\n" + output)
             elif commandname == "time":
                 output = datetime.now().strftime("%-I:%M %p")
                 if statement["mode"] in ("write", "append"):
@@ -89,11 +82,8 @@ class Shell:
                     filename = statement["output_file"]
                     with open(filename, mode) as file:
                         file.write(output)
-                    self.gui.append("\n")
-                    self.gui.append_prefix()
                 else:
-                    self.gui.append("\n" + output + "\n")
-                    self.gui.append_prefix()
+                    self.gui.append("\n" + output)
             else:
                 args = util.split(command, strip_quotes=True)
                 result = subprocess.run(args, capture_output=True, text=True, check=True)
@@ -102,13 +92,9 @@ class Shell:
                     filename = statement["output_file"]
                     with open(filename, mode) as file:
                         file.write(result.stdout)
-                    self.gui.append("\n")
-                    self.gui.append_prefix()
                 else:
                     self.gui.append("\n" + result.stdout)
-                    if result.stdout and not result.stdout.endswith("\n"):
-                        self.gui.append("\n")
-                    self.gui.append_prefix()
+        self.gui.flush()
 
     def compile(self, code):
         statements = []

@@ -36,7 +36,6 @@ class GUI(tk.Tk):
 
     def clear_text(self):
         self.text_area.delete("1.0", tk.END)
-        self.append_prefix()
 
     def handle_key_press(self, event):
         index = self.text_area.index(tk.INSERT)
@@ -60,3 +59,15 @@ class GUI(tk.Tk):
         index = self.text_area.index(tk.END)
         numlines = int(index.split(".")[0]) - 1
         return numlines
+
+    def flush(self):
+        index = self.text_area.index(tk.INSERT)
+        line, pos = index.split(".")
+        code = self.text_area.get(f"{line}.0", f"{line}.end").strip()
+        if not code:
+            self.append_prefix()
+        elif code == self.prefix:
+            return
+        else:
+            self.append("\n")
+            self.append_prefix()
