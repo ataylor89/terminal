@@ -104,6 +104,9 @@ class Shell:
         statements = []
         stmts = util.split(code, delimiter=";")
         for stmt in stmts:
+            stmt = stmt.strip()
+            if not stmt:
+                continue
             statement = {}
             statement["code"] = stmt
             if util.search(stmt, "|"):
