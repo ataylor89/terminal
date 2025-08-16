@@ -1,9 +1,12 @@
 import subprocess
+import time
 import fcntl
 import os
+from datetime import datetime
 
-class Bash:
-    def __init__(self):
+class Shell:
+    def __init__(self, config):
+        self.config = config
         try:
             self.process = subprocess.Popen(
                 ["/bin/bash", "-i"],
@@ -16,24 +19,44 @@ class Bash:
         except Exception as err:
             print(err)
 
-    def readall(self):
-        stdout = ""
-        stderr = ""
-        done = False
-        while not done:
-            try:
-                stdout += self.process.stdout.read()
-            except:
-                done = True
-        done = False
-        while not done:
-            try:
-                stderr += self.process.stderr.read()
-            except:
-                done = True
-        return stdout
+    def set_gui(self, gui):
+        self.gui = gui
 
-    def write(self, userinput):
-        self.process.stdin.write(userinput)
-        self.process.stdin.write("\n")
-        self.process.stdin.flush()
+    def run(self, cmd):
+        cmdname = cmd.split()[0] if cmd else None
+        if cmdname == "exit":
+            self.process.terminate()
+            self.gui.destroy()
+        elif cmdname == "clear":
+            self.gui.clear_text()
+            self.gui.flush(prefix=True)
+        elif cmdname == "date":
+            self.gui.flush(prefix=False)
+            self.gui.append(datetime.now().strftime("%A, %B %d, %Y"))
+            self.gui.flush(prefix=True)
+        elif cmdname == "time":
+            self.gui.flush(prefix=False)
+            self.gui.append(datetime.now().strftime("%-I:%M %p"))
+            self.gui.flush(prefix=True)
+        else:
+            self.process.stdin.write(cmd)
+            self.process.stdin.write("\n")
+            self.process.stdin.flush()
+            time.sleep(0.01)
+            stdout = ""
+            stderr = ""
+            done = False
+            while not done:
+                try:
+                    stdout += self.process.stdout.read()
+                except:
+                    done = True
+            done = False
+            while not done:
+                try:
+                    stderr += self.process.stderr.read()
+                except:
+                    done = True
+            self.gui.flush(prefix=False)
+            self.gui.append(stdout)
+            self.gui.flush(prefix=True)
