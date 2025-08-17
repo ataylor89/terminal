@@ -1,3 +1,10 @@
+# This file is actually a work in progress
+# The file shell.py is more fully functional
+# We are using polymorphism because we can substitute a Shell instance from this file or from bash.py
+# We can even create a third file called zsh.py
+# I'm still working on this file
+# It's a work in progress
+
 import subprocess
 import time
 import fcntl
