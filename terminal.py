@@ -1,5 +1,5 @@
 import gui
-from shells import shell, bash
+import shell
 import parser
 
 def main():
