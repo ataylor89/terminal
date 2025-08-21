@@ -26,8 +26,7 @@ class Shell:
             self._run(code)
         except Exception as err:
             print(err)
-            self.gui.append("\n")
-            self.gui.append_prefix()
+            self.gui.flush(prefix=True)
 
     def _run(self, code):
         code = self.preprocess(code)
