@@ -10,7 +10,7 @@ class Terminal(tk.Tk):
         width = self.winfo_screenwidth()
         height = self.winfo_screenheight()
         self.geometry(f'{width}x{height}+0+0')
-        self.text = tk.Text(self, background='blue', foreground='white')
+        self.text = tk.Text(self, background='blue', foreground='white', font=('SF Mono Regular', 16))
         self.text.pack(expand=True, fill='both')
         self.pid, self.parent_fd = pty.fork()
         if self.pid == 0:
