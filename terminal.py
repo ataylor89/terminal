@@ -5,7 +5,7 @@ import threading
 
 class Terminal(tk.Tk):
     def __init__(self):
-        tk.Tk.__init__(self)
+        super().__init__()
         self.title('Terminal')
         width = self.winfo_screenwidth()
         height = self.winfo_screenheight()
