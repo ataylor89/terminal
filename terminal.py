@@ -19,6 +19,13 @@ class Terminal(tk.Tk):
             self.text.bind('<Key>', self.write_to_pty)
             threading.Thread(target=self.read_from_pty, daemon=True).start()
 
+    def write_to_pty(self, event):
+        char = event.char
+        if event.keysym == 'Return':
+            char = '\n'
+        os.write(self.parent_fd, char.encode())
+        return 'break'
+
     def read_from_pty(self):
         while True:
             try:
@@ -28,13 +35,6 @@ class Terminal(tk.Tk):
                     self.text.see('end')
             except OSError:
                 break
-
-    def write_to_pty(self, event):
-        char = event.char
-        if event.keysym == 'Return':
-            char = '\n'
-        os.write(self.parent_fd, char.encode())
-        return 'break'
 
 if __name__ == '__main__':
     gui = Terminal()
