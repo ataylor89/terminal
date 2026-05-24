@@ -16,17 +16,17 @@ class Terminal(tk.Tk):
         if self.pid == 0:
             os.execlp('bash', 'bash')
         else:
-            self.text.bind('<Key>', self.write_to_pty)
-            threading.Thread(target=self.read_from_pty, daemon=True).start()
+            self.text.bind('<Key>', self.write)
+            threading.Thread(target=self.readloop, daemon=True).start()
 
-    def write_to_pty(self, event):
+    def write(self, event):
         char = event.char
         if event.keysym == 'Return':
             char = '\n'
         os.write(self.parent_fd, char.encode())
         return 'break'
 
-    def read_from_pty(self):
+    def readloop(self):
         while True:
             try:
                 data = os.read(self.parent_fd, 1024).decode(errors='ignore')
